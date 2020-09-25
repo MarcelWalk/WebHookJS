@@ -18,7 +18,7 @@ app.post("/webhook", (req, res) => {
     res.status(200).end() // Responding is important
 })
 app.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname + '/index.html'));
+    res.sendFile(path.join(__dirname + '/html/index.html'));
 });
 
 // Start express on the defined port
