@@ -1,6 +1,6 @@
 # WebHookJS
 
-WebHookJS is a CD service I wrote because 
+WebHookJS is a CD (Continous Deployment) service I wrote because 
 Netlify does'nt support deployment to self-hosted servers.
 
 It uses Github Webhooks as a trigger to clone a repository  
