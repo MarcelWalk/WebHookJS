@@ -3,8 +3,9 @@ const bodyParser = require("body-parser")
 const express = require('express');
 const git = require("nodegit");
 const path = require('path');
-
+var ip = require("ip");
 var config = require('./config.json');
+
 
 
 // Initialize express and define a port
@@ -22,4 +23,5 @@ app.post("/" + config.hook_path, (req, res) => {
 })
 
 // Start express on the defined port
-app.listen(PORT, () => console.log(`http://[YOUR IP]:${PORT}`+"/" + config.hook_path ))
+console.log("Listening on:")
+app.listen(PORT, () => console.log(`http://${ip.address()}:${PORT}`+"/" + config.hook_path ))
