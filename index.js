@@ -7,6 +7,7 @@ var crypto = require('crypto');
 const fs = require('fs-extra')
 var ip = require("ip");
 var config = require('./config.json');
+const { exec } = require("child_process");
 
 
 
@@ -18,23 +19,47 @@ const PORT = config.port
 app.use(bodyParser.json());
 app.post("/" + config.hook_path, (req, res) => {
 
-    console.log(req.rawHeaders)
-    console.log(req.rawHeaders[19])
-
+    //Build expected hash
     var check = `sha1=${crypto.createHmac('sha1', config.hook_secret).update(JSON.stringify(req.body), 'utf-8').digest('hex')}`
     console.log(check);
+
+    //Get relevant line and check if its equal to the expected value (Password check)
     if (check === req.rawHeaders[19]) {
-        fs.removeSync(config.clone_directory)
-        git.Clone(req.body.repository.clone_url, config.clone_directory).then(function (repository) {
-            // Work with the repository object here.
+
+        config.pre_exec_cmds.split(";").forEach(element => {
+            if(element !== '' && element)
+            executeCmd(element)
         });
-        res.status(200).end() // Responding is important
+
+        //Revome old folder and clone new
+        fs.removeSync(config.clone_directory)
+        git.Clone(req.body.repository.clone_url, config.clone_directory);//.then(function (repository) {});
+
+        config.post_exec_cmds.split(";").forEach(element => {
+            if(element !== '' && element)
+            executeCmd(element)
+        });
+
+        //Send Response
+        res.status(200).end()
     } else {
         res.status(403).end()
     }
-
-
 })
+
+function executeCmd(str){
+    exec(str, (error, stdout, stderr) => {
+        if (error) {
+            console.log(`error: ${error.message}`);
+            return;
+        }
+        if (stderr) {
+            console.log(`stderr: ${stderr}`);
+            return;
+        }
+        console.log(`stdout: ${stdout}`);
+    });
+}
 
 // Start express on the defined port
 console.log("Listening on:")
