@@ -1,8 +1,8 @@
 {
-    "port" : 9090,
-    "clone_directory" : "foot",
-    "hook_path" : "webhook",
-    "hook_secret": "123",
-    "post_exec_cmds": "cd C:/Users/mwalk/Desktop/WebHookJS;mkdir test;",
-    "pre_exec_cmds": ""
+  "port": "65523",
+  "clone_directory": "foot",
+  "hook_path": "webhook",
+  "hook_secret": "123",
+  "post_exec_cmds": "cd C:/Users/mwalk/Desktop/WebHookJS;mkdir test;",
+  "pre_exec_cmds": ""
 }
